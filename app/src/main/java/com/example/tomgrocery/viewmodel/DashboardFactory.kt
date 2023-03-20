@@ -1,4 +1,4 @@
-package com.example.groceryappplus.viewmodel
+package com.example.tomgrocery.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

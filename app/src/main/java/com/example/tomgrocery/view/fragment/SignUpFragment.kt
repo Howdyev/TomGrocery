@@ -53,18 +53,18 @@ class SignUpFragment : Fragment() {
     }
 
     private fun setupObserver() {
-        viewModel.signedOn.observe(containerActivity) {
+        viewModel.signedOn.observe(viewLifecycleOwner) {
             if(it) {
                 openLoginScreen()
                 MyToast.showToast(requireContext(), "Signed up successfully!")
             }
         }
-        viewModel.apiResultMessage.observe(containerActivity) {
+        viewModel.apiResultMessage.observe(viewLifecycleOwner) {
             if(!it.isEmpty()) {
                 MyToast.showToast(requireContext(), it)
             }
         }
-        viewModel.isProcessing.observe(containerActivity) {
+        viewModel.isProcessing.observe(viewLifecycleOwner) {
             if(it) {
                 binding.progressBar.root.visibility = View.VISIBLE
             } else {

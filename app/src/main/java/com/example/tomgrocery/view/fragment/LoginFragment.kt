@@ -65,12 +65,12 @@ class LoginFragment: Fragment() {
     }
 
     private fun setupObserver() {
-        viewModel.apiResultMessage.observe(containerActivity) {
+        viewModel.apiResultMessage.observe(viewLifecycleOwner) {
             if(!it.isEmpty()) {
                 MyToast.showToast(requireContext(), it)
             }
         }
-        viewModel.userInfo.observe(containerActivity) {
+        viewModel.userInfo.observe(viewLifecycleOwner) {
             it?.let {
                 localStorage.saveLoginInfo(
                     firstName = it.user.firstName,
@@ -83,7 +83,7 @@ class LoginFragment: Fragment() {
                 containerActivity.finish()
             }
         }
-        viewModel.isProcessing.observe(containerActivity) {
+        viewModel.isProcessing.observe(viewLifecycleOwner) {
             if(it) {
                 binding.progressBar.root.visibility = View.VISIBLE
             } else {

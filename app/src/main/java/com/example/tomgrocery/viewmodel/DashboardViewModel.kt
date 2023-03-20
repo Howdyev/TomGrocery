@@ -1,4 +1,4 @@
-package com.example.groceryappplus.viewmodel
+package com.example.tomgrocery.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -17,7 +17,6 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var categoryList = MutableLiveData<List<Category>>()
     var searchList = MutableLiveData<List<Product>>()
     var subCategories = MutableLiveData<List<SubCategory>>()
-    var categoryId = MutableLiveData<Int>()
     var size = MutableLiveData<Int>()
     var search = MutableLiveData<String>()
     var products = MutableLiveData<List<Product>>()
@@ -25,6 +24,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     lateinit var disposable: Disposable
 
     fun getCategories() {
+        isProcessing.postValue(true)
         disposable = repository.getCategories()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -33,6 +33,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
                 isProcessing.postValue(false)
             }, {
                 Log.i("category", "category failed")
+                isProcessing.postValue(false)
             })
     }
 
@@ -49,25 +50,35 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     }
 
     fun getSubCategory() {
-        disposable = repository.getSubCategoryData(categoryId.value.toString())
+        isProcessing.postValue(true)
+        disposable = repository.getSubCategoryData(staticCategoryId.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 subCategories.value = it.data
+                isProcessing.postValue(false)
             }, {
                 Log.i("subcat", "subcat failed")
+                isProcessing.postValue(false)
             })
-
     }
 
     fun getProductsBySubId(subCatId: Int) {
+        isProcessing.postValue(true)
+        products.postValue(listOf())
         disposable = repository.getProductsBySubId(subCatId.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 products.postValue(it.data)
+                isProcessing.postValue(false)
             }, {
                 Log.i("products", "products failed")
+                isProcessing.postValue(false)
             })
+    }
+
+    companion object {
+        var staticCategoryId = 1
     }
 }

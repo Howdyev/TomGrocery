@@ -23,4 +23,7 @@ object Constants {
     const val FRAG_TAG_SIGNUP = "SignUpFragment"
 
     const val ForgotPassword_Fragment = "ForgotPassword_Fragment"
+
+    const val DASHBOARD_HOME = 1
+    const val DASHBOARD_CATEGORY = 2
 }

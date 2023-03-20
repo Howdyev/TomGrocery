@@ -20,6 +20,9 @@
         android:theme="@style/Theme.TomGrocery"
         tools:targetApi="31">
         <activity
+            android:name=".view.activity.CartActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.DashboardActivity"
             android:exported="false" />
         <activity
