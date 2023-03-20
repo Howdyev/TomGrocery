@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tomgrocery.R
 import com.example.tomgrocery.constants.Constants
 import com.example.tomgrocery.databinding.RowProductBinding
 import com.example.tomgrocery.model.local.AppDatabase
@@ -16,7 +17,9 @@ import com.example.tomgrocery.model.remote.dto.Product
 import com.example.tomgrocery.util.MyToast
 import com.example.tomgrocery.view.activity.DashboardActivity
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 class ProductAdapter (val context: Context, private val itemList: List<Product>) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
@@ -39,7 +42,19 @@ class ProductAdapter (val context: Context, private val itemList: List<Product>)
                 productPrice.text = "%.2f".format(product.price)
                 val url = Constants.BASE_IMAGE_URL + product.image
                 try {
-                    Picasso.get().load(url).into(binding.productImage)
+                    Picasso
+                        .get()
+                        .load(url)
+                        .error(R.drawable.no_image)
+                        .into(binding.productImage, object: Callback {
+                            override fun onSuccess() {
+                                binding.progressbar.visibility = View.GONE
+                            }
+
+                            override fun onError(e: Exception?) {
+                                binding.progressbar.visibility = View.GONE
+                            }
+                        })
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
                 }
@@ -98,7 +113,8 @@ class ProductAdapter (val context: Context, private val itemList: List<Product>)
                     quantity = temp,
                     price = product.price,
                     totalPrice = temp * product.price,
-                    productImg = product.image
+                    productImg = product.image,
+                    description = product.description
                 )
                 cartManager.addToCart(cartItem)?.let {
                     addToCart.visibility = View.GONE

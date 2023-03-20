@@ -11,5 +11,6 @@ data class Cart(
     val quantity: Int,
     val price: Float,
     val totalPrice: Float,
-    val productImg: String
+    val productImg: String,
+    val description: String
 )

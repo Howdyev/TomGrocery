@@ -48,27 +48,21 @@ class CategoryAdapter(
     override fun getItemCount() = categoryList.size
 
     inner class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         fun bind(category: Category) {
             try {
                 Picasso
                     .get()
                     .load(BASE_IMAGE_URL + category.catImage)
+                    .placeholder(R.drawable.no_image)
                     .error(R.drawable.no_image)
-                    .into(binding.categoryImage, object: Callback {
-                        override fun onSuccess() {
-                            binding.progressbar.visibility = View.GONE
-                        }
-
-                        override fun onError(e: Exception?) {
-                            binding.progressbar.visibility = View.GONE
-                        }
-                    })
+                    .into(binding.categoryImage)
+                binding.progressbar.visibility = View.GONE
 
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
                 binding.progressbar.visibility = View.GONE
             }
-
             binding.categoryTitle.text = category.catName
         }
     }

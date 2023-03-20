@@ -42,7 +42,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         setContentView(binding.root)
 
         initDBConnection()
-        cartListFromDB()
 
         setSupportActionBar(binding.appbarMain.toolbar)
         val toggle = ActionBarDrawerToggle(
@@ -68,10 +67,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
         }
         displaySelectedScreen(R.id.nav_home)
-    }
-
-    private fun cartListFromDB() {
-        cartList
     }
 
     private fun initDBConnection() {
@@ -138,7 +133,8 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 quantity = quantity,
                 price = cart.price,
                 totalPrice = cart.price * quantity,
-                productImg = cart.productImg
+                productImg = cart.productImg,
+                description =  cart.description
             )
             cartDao.addItemToCart(replaceCart)
             return replaceCart
