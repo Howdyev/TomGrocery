@@ -74,12 +74,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnCheckout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/colorPrimary"
             android:gravity="center"
-            android:onClick="onCheckoutClicked"
             android:orientation="horizontal">
 
             <TextView

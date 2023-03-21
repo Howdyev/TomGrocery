@@ -33,16 +33,9 @@ class CartAdapter(val context: Context, private val itemList: MutableList<Cart>)
                     Picasso
                         .get()
                         .load(url)
+                        .placeholder(R.drawable.no_image)
                         .error(R.drawable.no_image)
-                        .into(binding.productImage, object: Callback {
-                            override fun onSuccess() {
-                                binding.progressbar.visibility = View.GONE
-                            }
-
-                            override fun onError(e: Exception?) {
-                                binding.progressbar.visibility = View.GONE
-                            }
-                        })
+                        .into(binding.productImage)
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
                 }

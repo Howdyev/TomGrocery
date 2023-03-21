@@ -20,14 +20,18 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".view.activity.CheckoutActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.CartActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.DashboardActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.activity.LoginRegisterActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false" />
         <activity
             android:name=".view.activity.WelcomeActivity"

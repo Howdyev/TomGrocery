@@ -43,6 +43,9 @@ class CartActivity : AppCompatActivity() {
 
         binding.totalPrice.text = "\$%.2f".format(getTotalPrice())
         setUpCartRecyclerview()
+        binding.btnCheckout.setOnClickListener {
+            startActivity(Intent(applicationContext, CheckoutActivity::class.java))
+        }
     }
 
     private fun initDBConnection() {
@@ -110,13 +113,20 @@ class CartActivity : AppCompatActivity() {
             setMessage("Do you want to Delete")
             setIcon(R.drawable.ic_delete_black_24dp)
             setPositiveButton("Delete") { dialog, _ ->
+                deleteAllCartItems()
                 dialog.dismiss()
             }
             setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
+            show()
         }
 
+    }
+    private fun deleteAllCartItems() {
+        cartDao.deleteAllCartItems()
+        binding.cartRv.adapter = CartAdapter(this, mutableListOf())
+        updateTotalPrice()
     }
 
     override fun onBackPressed() {
