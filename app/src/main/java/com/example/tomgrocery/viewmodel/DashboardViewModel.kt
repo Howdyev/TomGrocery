@@ -9,12 +9,14 @@ import com.example.tomgrocery.model.remote.dto.MyOrdersResponse
 import com.example.tomgrocery.model.remote.dto.Product
 import com.example.tomgrocery.model.remote.dto.SubCategory
 import com.example.tomgrocery.model.repository.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
+@HiltViewModel
 class DashboardViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
     val isProcessing = MutableLiveData(false)
     var categoryList = MutableLiveData<List<Category>>()
