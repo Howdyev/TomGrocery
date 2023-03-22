@@ -1,13 +1,16 @@
 package com.example.tomgrocery.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.currentRecomposeScope
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tomgrocery.model.remote.dto.Category
+import com.example.tomgrocery.model.remote.dto.MyOrdersResponse
 import com.example.tomgrocery.model.remote.dto.Product
 import com.example.tomgrocery.model.remote.dto.SubCategory
 import com.example.tomgrocery.model.repository.Repository
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -21,11 +24,13 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var search = MutableLiveData<String>()
     var products = MutableLiveData<List<Product>>()
 
-    lateinit var disposable: Disposable
+    var myOrdersResponse = MutableLiveData<MyOrdersResponse>()
+
+    private var compositeDisposable = CompositeDisposable()
 
     fun getCategories() {
         isProcessing.postValue(true)
-        disposable = repository.getCategories()
+        val disposable = repository.getCategories()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -35,10 +40,11 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
                 Log.i("category", "category failed")
                 isProcessing.postValue(false)
             })
+        compositeDisposable.add(disposable)
     }
 
     fun searchProduct(search: String) {
-        disposable = repository.searchProduct(search)
+        val disposable = repository.searchProduct(search)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -47,11 +53,12 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
             }, {
                 Log.i("search", "search failed")
             })
+        compositeDisposable.add(disposable)
     }
 
     fun getSubCategory() {
         isProcessing.postValue(true)
-        disposable = repository.getSubCategoryData(staticCategoryId.toString())
+        val disposable = repository.getSubCategoryData(staticCategoryId.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -61,12 +68,13 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
                 Log.i("subcat", "subcat failed")
                 isProcessing.postValue(false)
             })
+        compositeDisposable.add(disposable)
     }
 
     fun getProductsBySubId(subCatId: Int) {
         isProcessing.postValue(true)
         products.postValue(listOf())
-        disposable = repository.getProductsBySubId(subCatId.toString())
+        val disposable = repository.getProductsBySubId(subCatId.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -76,6 +84,27 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
                 Log.i("products", "products failed")
                 isProcessing.postValue(false)
             })
+        compositeDisposable.add(disposable)
+    }
+
+    fun myOrders(userId: String) {
+        isProcessing.postValue(true)
+        val disposable = repository.myOrders(userId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                myOrdersResponse.postValue(it)
+                isProcessing.postValue(false)
+            },{
+                Log.i("myorders", "my orders failed!")
+                isProcessing.postValue(false)
+            })
+        compositeDisposable.add(disposable)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
 
     companion object {

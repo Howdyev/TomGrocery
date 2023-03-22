@@ -13,6 +13,18 @@ class RemoteRepository(private val apiService: ApiService) {
         return apiService.registerUser(registerData)
     }
 
+    fun updateUserAddress(updateAddressRequestData: UpdateAddressRequestData) : Single<UpdateAddressResponse>{
+        return apiService.updateUserAddress(updateAddressRequestData)
+    }
+
+    fun placeOrder(placeOrderRequestData: PlaceOrderRequestData) : Single<PlaceOrderResponse>{
+        return apiService.placeOrder(placeOrderRequestData)
+    }
+
+    fun myOrders(userId: String) : Single<MyOrdersResponse> {
+        return apiService.myOrders(userId)
+    }
+
     fun getCategories() : Single<CategoryResponse> {
         return apiService.getCategories()
     }

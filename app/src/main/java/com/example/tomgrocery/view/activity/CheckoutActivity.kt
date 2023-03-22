@@ -12,14 +12,25 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tomgrocery.R
 import com.example.tomgrocery.databinding.ActivityCheckoutBinding
+import com.example.tomgrocery.model.local.AppDatabase
+import com.example.tomgrocery.model.local.dao.AddressDao
+import com.example.tomgrocery.model.local.dao.CartDao
+import com.example.tomgrocery.model.local.entity.Cart
+import com.example.tomgrocery.model.remote.dto.Address
 import com.example.tomgrocery.view.fragment.AddressFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CheckoutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCheckoutBinding
+    private lateinit var appDB: AppDatabase
+    private lateinit var cartDao: CartDao
+    private lateinit var addressDao: AddressDao
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCheckoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initDBConnection()
 
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFF")))
         changeActionBarTitle(supportActionBar)
@@ -31,6 +42,12 @@ class CheckoutActivity : AppCompatActivity() {
             .setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left)
             .replace(R.id.content_frame, AddressFragment())
             .commit()
+    }
+
+    private fun initDBConnection() {
+        appDB = AppDatabase.getInstance(baseContext)!!
+        cartDao = appDB.getCartDao()
+        addressDao = appDB.getAdressDao()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -77,5 +94,17 @@ class CheckoutActivity : AppCompatActivity() {
             // Finally, set the newly created TextView as ActionBar custom view
             actionBar.customView = tv
         }
+    }
+
+    fun getTotalPrice(): Float {
+        return cartDao.getCartTotal()
+    }
+
+    fun getAllCartItems(): MutableList<Cart> {
+        return cartDao.getCartItems()
+    }
+
+    fun getAllAddressItems(): List<Address> {
+        return addressDao.getAllAddresses()
     }
 }

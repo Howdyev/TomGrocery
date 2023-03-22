@@ -19,12 +19,9 @@ class AuthViewModel @Inject constructor(private val repository: Repository): Vie
     val signedOn = MutableLiveData( false)
     val apiResultMessage = MutableLiveData<String>("")
     private val compositeDisposable = CompositeDisposable()
-
-    lateinit var disposable: Disposable
-
     fun login(loginData: LoginData) {
         isProcessing.postValue(true)
-        disposable = repository.loginUser(loginData)
+        val disposable = repository.loginUser(loginData)
             .subscribe(
                 {
                     Log.i("login", "login success")
@@ -38,6 +35,7 @@ class AuthViewModel @Inject constructor(private val repository: Repository): Vie
                     apiResultMessage.postValue("Login failed!")
                 }
             )
+        compositeDisposable.add(disposable)
     }
 
     fun register(registerData: RegisterData) {

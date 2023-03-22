@@ -1,7 +1,10 @@
 package com.example.tomgrocery.model.remote
 
+import com.example.tomgrocery.constants.Constants.ADDRESS_END_POINT
 import com.example.tomgrocery.constants.Constants.CATEGORY_END_POINT
 import com.example.tomgrocery.constants.Constants.LOGIN_END_POINT
+import com.example.tomgrocery.constants.Constants.MY_ORDERS_END_POINT
+import com.example.tomgrocery.constants.Constants.PLACE_ORDER_END_POINT
 import com.example.tomgrocery.constants.Constants.PRODUCTS_BY_SUB_ID_END_POINT
 import com.example.tomgrocery.constants.Constants.REGISTRATION_END_POINT
 import com.example.tomgrocery.constants.Constants.SEARCH_END_POINT
@@ -21,6 +24,14 @@ interface ApiService {
     @POST(REGISTRATION_END_POINT)
     fun registerUser(@Body registerData: RegisterData) : Single<SignupResponse>
 
+    @POST(ADDRESS_END_POINT)
+    fun updateUserAddress(@Body addressData: UpdateAddressRequestData) : Single<UpdateAddressResponse>
+
+    @POST(PLACE_ORDER_END_POINT)
+    fun placeOrder(@Body placeOrderRequestData: PlaceOrderRequestData) : Single<PlaceOrderResponse>
+
+    @GET("$MY_ORDERS_END_POINT{userId}")
+    fun myOrders(@Path("userId") userId: String) : Single<MyOrdersResponse>
     @GET(CATEGORY_END_POINT)
     fun getCategories() : Single<CategoryResponse>
 

@@ -14,12 +14,14 @@ class LocalStorage @Inject constructor(@ApplicationContext context: Context) {
     fun saveLoginInfo(
         firstName: String,
         email: String,
+        phone: String,
         userId: String,
         token: String,
         firstTime: Boolean
     ) {
         loginEditor.putString(Constants.PREF_FIRST_NAME, firstName)
         loginEditor.putString(Constants.PREF_EMAIL, email)
+        loginEditor.putString(Constants.PREF_PHONE, phone)
         loginEditor.putString(Constants.PREF_USER_ID, userId)
         loginEditor.putString(Constants.PREF_TOKEN, token)
         loginEditor.putBoolean(Constants.PREF_FIRST_TIME, firstTime)
@@ -37,6 +39,18 @@ class LocalStorage @Inject constructor(@ApplicationContext context: Context) {
 
     fun getUserName(): String {
         return loginPrefs.getString(Constants.PREF_FIRST_NAME, "") ?: ""
+    }
+
+    fun getUserId(): String {
+        return loginPrefs.getString(Constants.PREF_USER_ID, "") ?: ""
+    }
+
+    fun getUserEmail(): String {
+        return loginPrefs.getString(Constants.PREF_EMAIL, "") ?: ""
+    }
+
+    fun getUserPhone(): String {
+        return loginPrefs.getString(Constants.PREF_PHONE, "") ?: ""
     }
 //    val KEY_USER = "User"
 //    val KEY_USER_ADDRESS = "user_address"

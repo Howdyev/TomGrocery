@@ -1,0 +1,48 @@
+{
+  "error": false,
+  "message": "Order added successfully",
+  "data": {
+    "_id": "641aceb1d10db000115759d7",
+    "userId": "64145379d10db00011575899",
+    "orderSummary": {
+      "_id": "641aceb1d10db000115759d8",
+      "deliveryCharges": 10,
+      "discount": 10,
+      "ourPrice": 10,
+      "totalAmount": 300
+    },
+    "products": [
+      {
+        "_id": "641aceb1d10db000115759db",
+        "price": 80,
+        "quantity": 2,
+        "productName": "Chicken Hariyali 150 grams"
+      },
+      {
+        "_id": "641aceb1d10db000115759da",
+        "price": 30,
+        "quantity": 2,
+        "productName": "Chicken Samosa 2 pcs "
+      },
+      {
+        "_id": "641aceb1d10db000115759d9",
+        "price": 80,
+        "quantity": 1,
+        "productName": "Chicken Kabab 150 grams"
+      }
+    ],
+    "shippingAddress": {
+      "city": "dsfgsdfg",
+      "houseNo": "123",
+      "pincode": 12334,
+      "streetName": "sdfa",
+      "type": "asdafs"
+    },
+    "user": {
+      "_id": "641aceb1d10db000115759dc",
+      "email": "phain118@outlook.com"
+    },
+    "date": "2023-03-22T09:47:29.672Z",
+    "__v": 0
+  }
+}

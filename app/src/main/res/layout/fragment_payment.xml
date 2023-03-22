@@ -103,16 +103,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:checked="false"
-                android:enabled="false"
+                android:checked="true"
+                android:enabled="true"
                 android:text="CARD PAYMENT" />
 
             <RadioButton
                 android:id="@+id/cash_on_delivery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="CAH ON DELIVERY" />
+                android:checked="false"
+                android:enabled="false"
+                android:text="CASH ON DELIVERY" />
 
         </RadioGroup>
 
@@ -139,24 +140,6 @@
                         android:orientation="vertical">
 
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            android:text="SAVED CARDS"
-                            android:textColor="@color/lightgrey"
-                            android:textSize="@dimen/text" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Online Payment Not Available"
-                            android:textAlignment="center"
-                            android:textColor="#474747"
-                            android:textSize="25dp"
-                            android:visibility="gone"
-                            />
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -166,176 +149,158 @@
                             android:background="@color/lightgrey"></View>
 
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            android:text="NEW CARDS"
-                            android:textColor="@color/lightgrey"
-                            android:textSize="@dimen/text" />
-
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:background="@drawable/bg_ccv"
-                            android:orientation="horizontal"
-                            android:padding="13dp">
-
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
 
                             <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:text="CARD NUMBER"
+                                android:textColor="@color/lightgrey"
+                                android:textSize="14dp" />
+
+                            <EditText
+                                android:id="@+id/input_card_number"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:background="#00000000"
-                                android:focusable="true"
-                                android:hint="CARD NUMBER"
-                                android:enabled="false"
-                                android:inputType="number"
-                                android:lines="1"
-                                android:maxLength="20"
-                                android:paddingLeft="5dp"
-                                android:paddingRight="5dp"
-                                android:textColor="@color/text"
-                                android:textColorHint="@color/lightgrey"
-                                android:textSize="@dimen/text" />
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="@android:color/transparent"
+                                android:hint=""
+                                android:textColor="@color/black"
+                                android:textColorHint="@color/borderColor"
+                                android:textSize="16dp" />
 
-
-                            <!--********you have to code at java side to detect perticular card (visa, mastercard or else)********-->
-
-                            <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="22dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/master"
-
-                                />
-
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/lightgrey" />
 
                         </LinearLayout>
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginRight="16dp"
-                            android:background="@drawable/bg_ccv"
-                            android:orientation="horizontal"
-                            android:padding="14dp">
-
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
 
                             <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:text="NAME ON CARD"
+                                android:textColor="@color/lightgrey"
+                                android:textSize="14dp" />
+
+                            <EditText
+                                android:id="@+id/input_name_on_card"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:background="#00000000"
-                                android:focusable="true"
-                                android:hint=" NAME ON CARD"
-                                android:enabled="false"
-                                android:lines="1"
-                                android:maxLength="25"
-                                android:paddingLeft="5dp"
-                                android:paddingRight="5dp"
-                                android:textColor="@color/text"
-                                android:textColorHint="@color/lightgrey"
-                                android:textSize="@dimen/text" />
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="@android:color/transparent"
+                                android:hint=""
+                                android:textColor="@color/black"
+                                android:textColorHint="@color/borderColor"
+                                android:textSize="16dp" />
 
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/lightgrey" />
 
                         </LinearLayout>
-
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/bg_ccv"
                                 android:orientation="horizontal"
-                                android:padding="14dp">
+                                android:weightSum="2">
 
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:paddingRight="6dp"
-                                    android:text="EXPIRES ON"
-                                    android:textColor="@color/lightgrey"
-                                    android:textSize="@dimen/sub_text" />
-
-                                <TextView
+                                <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
+                                    android:layout_marginTop="10dp"
                                     android:layout_weight="1"
-                                    android:background="#00000000"
-                                    android:lines="1"
-                                    android:enabled="false"
-                                    android:maxLength="5"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:textColor="@color/text"
-                                    android:textColorHint="@color/text"
-                                    android:textSize="@dimen/text" />
+                                    android:orientation="vertical">
 
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="15dp"
+                                        android:text="EXPIRES ON"
+                                        android:textColor="@color/lightgrey"
+                                        android:textSize="14dp" />
 
+                                    <EditText
+                                        android:id="@+id/input_expires_on"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginBottom="5dp"
+                                        android:background="@android:color/transparent"
+                                        android:hint=""
+                                        android:textColor="@color/black"
+                                        android:textColorHint="@color/borderColor"
+                                        android:textSize="18dp" />
+
+                                </LinearLayout>
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:background="@color/lightgrey" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="15dp"
+                                        android:text="CVV"
+                                        android:textColor="@color/lightgrey"
+                                        android:textSize="14dp" />
+
+                                    <EditText
+                                        android:id="@+id/input_cvv"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginBottom="5dp"
+                                        android:background="@android:color/transparent"
+                                        android:digits="0123456789"
+                                        android:hint=""
+                                        android:inputType="number"
+                                        android:maxLength="6"
+                                        android:textColor="@color/black"
+                                        android:textColorHint="@color/borderColor"
+                                        android:textSize="18dp" />
+
+                                </LinearLayout>
                             </LinearLayout>
 
-                            <LinearLayout
+                            <View
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/bg_ccv"
-                                android:orientation="horizontal"
-                                android:padding="14dp">
-
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-
-                                    android:paddingRight="6dp"
-                                    android:text="CCV"
-                                    android:textColor="@color/lightgrey"
-                                    android:textSize="@dimen/sub_text" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="1"
-                                    android:enabled="false"
-                                    android:background="#00000000"
-                                    android:inputType="number"
-                                    android:lines="1"
-                                    android:maxLength="3"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:textColor="@color/text"
-                                    android:textColorHint="@color/text"
-                                    android:textSize="@dimen/text" />
-
-
-                            </LinearLayout>
+                                android:layout_height="1dp"
+                                android:background="@color/lightgrey" />
                         </LinearLayout>
 
 
@@ -359,7 +324,7 @@
                                 android:gravity="center"
                                 android:paddingLeft="6dp"
                                 android:paddingRight="6dp"
-                                android:text="CONFIRM AND PAY Rs."
+                                android:text="CONFIRM AND PAY"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text" />
                         </LinearLayout>

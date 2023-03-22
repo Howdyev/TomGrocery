@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.tomgrocery.model.remote.dto.LoginData
 import com.example.tomgrocery.R
@@ -25,12 +26,14 @@ import com.example.tomgrocery.view.activity.DashboardActivity
 import com.example.tomgrocery.view.activity.LoginRegisterActivity
 import com.example.tomgrocery.viewmodel.AuthViewModel
 import com.example.tomgrocery.viewmodel.AuthViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment: Fragment() {
-    private lateinit var localStorage: LocalStorage
     private lateinit var binding: FragmentLoginBinding
     private lateinit var containerActivity: LoginRegisterActivity
-    private lateinit var viewModel: AuthViewModel
+    private lateinit var localStorage: LocalStorage
+    private val viewModel: AuthViewModel by viewModels()
 
     private lateinit var shakeAnimation: Animation
 
@@ -51,17 +54,8 @@ class LoginFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         localStorage = LocalStorage(requireActivity().applicationContext)
-        setupViewModel()
         initViews()
         setupObserver()
-    }
-
-    private fun setupViewModel() {
-        val localRepository = LocalRepository()
-        val remoteRepository = RemoteRepository(ApiClient.retrofit.create(ApiService::class.java))
-        val repository = Repository(localRepository,remoteRepository)
-        val factory = AuthViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[AuthViewModel::class.java]
     }
 
     private fun setupObserver() {
@@ -75,6 +69,7 @@ class LoginFragment: Fragment() {
                 localStorage.saveLoginInfo(
                     firstName = it.user.firstName,
                     email = it.user.email,
+                    phone = it.user.mobile,
                     userId = it.user._id,
                     token = it.token,
                     firstTime =  true

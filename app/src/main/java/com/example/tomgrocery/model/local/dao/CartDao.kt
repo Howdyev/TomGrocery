@@ -27,4 +27,7 @@ interface CartDao {
 
     @Query("select * from Cart WHERE productId = :productId")
     fun getCartItem(productId: String) : Cart
+
+    @Query("SELECT COUNT(productId) FROM Cart")
+    fun getCount(): Int
 }

@@ -8,7 +8,8 @@ object Constants {
     const val LOGIN_END_POINT = "auth/login"
     const val SEARCH_END_POINT = "products/search/"
     const val ADDRESS_END_POINT = "address"
-    const val ORDER_END_POINT = "orders"
+    const val PLACE_ORDER_END_POINT = "orders"
+    const val MY_ORDERS_END_POINT = "orders/"
     const val SUBCATEGORY_END_POINT = "subcategory/"
     const val PRODUCTS_BY_SUB_ID_END_POINT = "products/sub/"
     const val LOGIN_SHARED_PREF = "loginPref"
@@ -18,7 +19,8 @@ object Constants {
     const val PREF_FIRST_NAME = "firstName"
     const val PREF_EMAIL = "email"
     const val PREF_PASSWORD = "password"
-    
+    const val PREF_PHONE = "phone"
+
     const val FRAG_TAG_LOGIN = "LoginFragment"
     const val FRAG_TAG_SIGNUP = "SignUpFragment"
 

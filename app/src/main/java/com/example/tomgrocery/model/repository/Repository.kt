@@ -24,6 +24,24 @@ class Repository(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun updateUserAddress(updateUserRequestData: UpdateAddressRequestData) : Single<UpdateAddressResponse>{
+        return remoteRepository.updateUserAddress(updateUserRequestData)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun placeOrder(placeOrderRequestData: PlaceOrderRequestData) : Single<PlaceOrderResponse>{
+        return remoteRepository.placeOrder(placeOrderRequestData)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun myOrders(userId: String) : Single<MyOrdersResponse>{
+        return remoteRepository.myOrders(userId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun getCategories() : Single<CategoryResponse> {
         return remoteRepository.getCategories()
     }
