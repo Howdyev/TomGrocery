@@ -23,7 +23,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var searchList = MutableLiveData<List<Product>>()
     var subCategories = MutableLiveData<List<SubCategory>>()
     var size = MutableLiveData<Int>()
-    var search = MutableLiveData<String>()
+    var searchResult = MutableLiveData<String>("")
     var products = MutableLiveData<List<Product>>()
 
     var myOrdersResponse = MutableLiveData<MyOrdersResponse>()
@@ -51,9 +51,9 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 searchList.value = it.data
-                isProcessing.postValue(false)
             }, {
                 Log.i("search", "search failed")
+                searchResult.postValue("Search failed!")
             })
         compositeDisposable.add(disposable)
     }

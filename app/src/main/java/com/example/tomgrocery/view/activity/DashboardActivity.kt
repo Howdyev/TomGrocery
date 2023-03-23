@@ -8,6 +8,7 @@ import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -15,6 +16,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tomgrocery.R
 import com.example.tomgrocery.databinding.ActivityDashboardBinding
 import com.example.tomgrocery.databinding.NavHeaderMainBinding
@@ -23,12 +26,13 @@ import com.example.tomgrocery.model.local.dao.CartDao
 import com.example.tomgrocery.model.local.entity.Cart
 import com.example.tomgrocery.model.remote.dto.Product
 import com.example.tomgrocery.util.CartBadgeConverter
-import com.example.tomgrocery.util.MyToast
 import com.example.tomgrocery.util.localstorage.LocalStorage
+import com.example.tomgrocery.view.adapter.ProductAdapter
 import com.example.tomgrocery.view.fragment.CategoryFragment
 import com.example.tomgrocery.view.fragment.HomeFragment
 import com.example.tomgrocery.view.fragment.MyOrderFragment
 import com.example.tomgrocery.view.fragment.ProductsFragment
+import com.example.tomgrocery.viewmodel.DashboardViewModel
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Observable
@@ -43,6 +47,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     private lateinit var appDB: AppDatabase
     private lateinit var cartDao: CartDao
     private var cartMenuItem: MenuItem? = null
+    private val viewModel: DashboardViewModel by viewModels()
     private var compositeDisposable = CompositeDisposable()
     var cartList = listOf<Product>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +83,33 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
         }
         displaySelectedScreen(R.id.nav_home)
+
+        setupObserver()
+    }
+
+    private fun setupObserver() {
+        viewModel.searchList.observe(this) {
+            showSearchResult(it)
+        }
+        viewModel.searchResult.observe(this) {
+            hideSearchResult()
+        }
+    }
+
+    private fun showSearchResult(products: List<Product>) {
+        val searchRecyclerView: RecyclerView = findViewById(R.id.search_recycler_view)
+        if(products.isNotEmpty()) {
+            searchRecyclerView.visibility = View.VISIBLE
+            searchRecyclerView.layoutManager = LinearLayoutManager(this)
+            searchRecyclerView.adapter = ProductAdapter(this, products)
+        } else {
+            searchRecyclerView.visibility = View.GONE
+        }
+    }
+
+    private fun hideSearchResult() {
+        val searchRecyclerView: RecyclerView = findViewById(R.id.search_recycler_view)
+        searchRecyclerView.visibility = View.GONE
     }
 
     private fun centerToolbarTitle(toolbar: Toolbar) {
@@ -156,11 +188,15 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     .filter { it.isNotEmpty() }
                     .distinctUntilChanged()
                     .subscribe({
-                        Log.i("pmhsearch", it)
+                        viewModel.searchProduct(it)
                     },{
                         Log.i("pmhsearch", "debounce search failed!")
                     })
                 compositeDisposable.add(disposable)
+                searchView.setOnCloseListener {
+                    hideSearchResult()
+                    true
+                }
             }
         }
         return true
