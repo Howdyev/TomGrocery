@@ -60,6 +60,7 @@ class ConfirmFragment : Fragment() {
             }
         }
         viewModel.placeOrderResponse.observe(viewLifecycleOwner) {
+            cartManager.clearCarts()
             showSuccessDialog()
         }
     }

@@ -107,4 +107,8 @@ class CheckoutActivity : AppCompatActivity() {
     fun getAllAddressItems(): List<Address> {
         return addressDao.getAllAddresses()
     }
+
+    fun clearCarts() {
+        return cartDao.deleteAllCartItems()
+    }
 }

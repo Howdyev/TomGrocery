@@ -1,11 +1,16 @@
 package com.example.tomgrocery.view.adapter
 
 import android.content.Context
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tomgrocery.databinding.OrderdetailsDialogBinding
 import com.example.tomgrocery.databinding.RowOrderBinding
+import com.example.tomgrocery.databinding.SuccessDialogBinding
 import com.example.tomgrocery.model.remote.dto.MyOrdersData
 
 class OrderAdapter (
@@ -26,7 +31,29 @@ class OrderAdapter (
         holder.apply {
             val order = orderList[position]
             bind(order)
+            itemView.setOnClickListener {
+                openOrderItemModal(order)
+            }
         }
+    }
+
+    private fun openOrderItemModal(order: MyOrdersData) {
+        val layoutInflater = LayoutInflater.from(context)
+        val dialogOrderDetail: OrderdetailsDialogBinding = OrderdetailsDialogBinding.inflate(layoutInflater)
+        val builder = AlertDialog.Builder(context).apply {
+            setView(dialogOrderDetail.root)
+            setCancelable(false)
+        }
+        val dialog = builder.create()
+        dialog.window?.setGravity(Gravity.CENTER)
+        dialogOrderDetail.apply {
+            dialogButtonOK.setOnClickListener {
+                dialog.dismiss()
+            }
+            orderList.layoutManager = LinearLayoutManager(context)
+            orderList.adapter = ProductInOrderAdapter(context, order.products)
+        }
+        dialog.show()
     }
 
     override fun getItemCount() = orderList.size
@@ -34,20 +61,6 @@ class OrderAdapter (
     inner class OrderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(order: MyOrdersData) {
-//            try {
-//                Picasso
-//                    .get()
-//                    .load(Constants.BASE_IMAGE_URL + category.catImage)
-//                    .placeholder(R.drawable.no_image)
-//                    .error(R.drawable.no_image)
-//                    .into(binding.categoryImage)
-//                binding.progressbar.visibility = View.GONE
-//
-//            } catch (e: java.lang.Exception) {
-//                e.printStackTrace()
-//                binding.progressbar.visibility = View.GONE
-//            }
-//            binding.categoryTitle.text = category.catName
             binding.orderId.text = "#" + order._id
             val year = order.date.substring(0,4)
             val month = order.date.substring(5,7)

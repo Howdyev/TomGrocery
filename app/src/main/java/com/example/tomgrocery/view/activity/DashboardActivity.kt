@@ -3,6 +3,7 @@ package com.example.tomgrocery.view.activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
@@ -22,6 +23,7 @@ import com.example.tomgrocery.model.local.dao.CartDao
 import com.example.tomgrocery.model.local.entity.Cart
 import com.example.tomgrocery.model.remote.dto.Product
 import com.example.tomgrocery.util.CartBadgeConverter
+import com.example.tomgrocery.util.MyToast
 import com.example.tomgrocery.util.localstorage.LocalStorage
 import com.example.tomgrocery.view.fragment.CategoryFragment
 import com.example.tomgrocery.view.fragment.HomeFragment
@@ -29,6 +31,10 @@ import com.example.tomgrocery.view.fragment.MyOrderFragment
 import com.example.tomgrocery.view.fragment.ProductsFragment
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +43,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     private lateinit var appDB: AppDatabase
     private lateinit var cartDao: CartDao
     private var cartMenuItem: MenuItem? = null
+    private var compositeDisposable = CompositeDisposable()
     var cartList = listOf<Product>()
     override fun onCreate(savedInstanceState: Bundle?) {
         localStorage = LocalStorage(applicationContext)
@@ -144,9 +151,41 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 val searchClose =
                     searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
                 searchClose.setImageResource(R.drawable.ic_close_black_24dp)
+                val disposable = RxSearchObservable.fromView(searchView)
+                    .debounce( 300, TimeUnit.MILLISECONDS)
+                    .filter { it.isNotEmpty() }
+                    .distinctUntilChanged()
+                    .subscribe({
+                        Log.i("pmhsearch", it)
+                    },{
+                        Log.i("pmhsearch", "debounce search failed!")
+                    })
+                compositeDisposable.add(disposable)
             }
         }
         return true
+    }
+
+    object RxSearchObservable {
+
+        fun fromView(searchView: SearchView): Observable<String> {
+
+            val subject = PublishSubject.create<String>()
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(s: String): Boolean {
+                    subject.onComplete()
+                    return true
+                }
+
+                override fun onQueryTextChange(text: String): Boolean {
+                    subject.onNext(text)
+                    return true
+                }
+            })
+
+            return subject
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -193,6 +232,11 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             return replaceCart
         }
         return null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 
     private fun getCartCount(): Int {
