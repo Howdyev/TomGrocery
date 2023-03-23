@@ -50,9 +50,10 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                searchList.value = it.data
+                searchList.postValue(it.data)
             }, {
                 Log.i("search", "search failed")
+                searchList.postValue(emptyList())
                 searchResult.postValue("Search failed!")
             })
         compositeDisposable.add(disposable)
