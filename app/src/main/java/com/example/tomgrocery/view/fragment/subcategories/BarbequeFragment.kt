@@ -5,22 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomgrocery.databinding.ProductListBinding
-import com.example.tomgrocery.viewmodel.DashboardFactory
 import com.example.tomgrocery.viewmodel.DashboardViewModel
 import com.example.tomgrocery.model.remote.dto.Product
 import com.example.tomgrocery.view.adapter.ProductAdapter
-import com.example.tomgrocery.model.remote.ApiClient
-import com.example.tomgrocery.model.remote.ApiService
-import com.example.tomgrocery.model.repository.LocalRepository
-import com.example.tomgrocery.model.repository.RemoteRepository
-import com.example.tomgrocery.model.repository.Repository
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BarbequeFragment : Fragment() {
     private lateinit var binding: ProductListBinding
-    private lateinit var viewModel: DashboardViewModel
+    private val viewModel: DashboardViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +24,6 @@ class BarbequeFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = ProductListBinding.inflate(layoutInflater)
-        setupViewModel()
         return binding.root
     }
 
@@ -57,12 +52,4 @@ class BarbequeFragment : Fragment() {
             binding.rvItems.adapter = adapter
         }
     }
-    private fun setupViewModel() {
-        val localRepository = LocalRepository()
-        val remoteRepository = RemoteRepository(ApiClient.retrofit.create(ApiService::class.java))
-        val repository = Repository(localRepository, remoteRepository)
-        val factory = DashboardFactory(repository)
-        viewModel = ViewModelProvider(requireActivity(), factory)[DashboardViewModel::class.java]
-    }
-
 }

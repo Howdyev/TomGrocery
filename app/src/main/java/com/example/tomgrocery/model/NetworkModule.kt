@@ -1,13 +1,16 @@
 package com.example.tomgrocery.model
 
+import android.content.Context
 import com.example.tomgrocery.constants.Constants.BASE_URL
 import com.example.tomgrocery.model.remote.ApiService
 import com.example.tomgrocery.model.repository.LocalRepository
 import com.example.tomgrocery.model.repository.RemoteRepository
 import com.example.tomgrocery.model.repository.Repository
+import com.example.tomgrocery.util.localstorage.MyContext
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -84,6 +87,12 @@ object NetworkModule {
     @Provides
     fun provideRepository(localRepository: LocalRepository,remoteRepository: RemoteRepository) : Repository {
         return Repository(localRepository,remoteRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMyContext(@ApplicationContext context: Context): MyContext {
+        return MyContext(context)
     }
 
 }

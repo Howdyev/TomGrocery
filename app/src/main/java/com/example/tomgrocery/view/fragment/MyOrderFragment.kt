@@ -18,13 +18,14 @@ import com.example.tomgrocery.view.adapter.OrderAdapter
 import com.example.tomgrocery.viewmodel.AuthViewModel
 import com.example.tomgrocery.viewmodel.DashboardViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MyOrderFragment : Fragment() {
 
     private lateinit var binding: FragmentMyOrderBinding
     private val viewModel: DashboardViewModel by viewModels()
-    private lateinit var localStorage: LocalStorage
+    @Inject lateinit var localStorage: LocalStorage
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +38,6 @@ class MyOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        localStorage = LocalStorage(requireContext().applicationContext)
         setupObserver()
         viewModel.myOrders(localStorage.getUserId())
     }

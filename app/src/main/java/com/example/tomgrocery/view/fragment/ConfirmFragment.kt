@@ -19,13 +19,14 @@ import com.example.tomgrocery.view.adapter.CheckoutCartAdapter
 import com.example.tomgrocery.viewmodel.CheckoutViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ConfirmFragment : Fragment() {
 
     private lateinit var binding: FragmentConfirmBinding
     private val viewModel: CheckoutViewModel by viewModels()
-    private lateinit var localStorage: LocalStorage
+    @Inject lateinit var localStorage: LocalStorage
     private lateinit var cartManager: CheckoutActivity
 
     override fun onCreateView(
@@ -39,7 +40,6 @@ class ConfirmFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        localStorage = LocalStorage(requireContext().applicationContext)
         cartManager = requireActivity() as CheckoutActivity
         activity?.title = "Confirm"
         initViews()

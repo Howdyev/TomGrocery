@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.tomgrocery.model.remote.ApiClient
 import com.example.tomgrocery.model.remote.ApiService
@@ -16,12 +17,13 @@ import com.example.tomgrocery.databinding.FragmentSignUpBinding
 import com.example.tomgrocery.util.MyToast
 import com.example.tomgrocery.view.activity.LoginRegisterActivity
 import com.example.tomgrocery.viewmodel.AuthViewModel
-import com.example.tomgrocery.viewmodel.AuthViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignUpBinding
     private lateinit var containerActivity: LoginRegisterActivity
-    private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,17 +41,8 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViewModel()
         initViews()
         setupObserver()
-    }
-
-    private fun setupViewModel() {
-        val localRepository = LocalRepository()
-        val remoteRepository = RemoteRepository(ApiClient.retrofit.create(ApiService::class.java))
-        val repository = Repository(localRepository,remoteRepository)
-        val factory = AuthViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[AuthViewModel::class.java]
     }
 
     private fun setupObserver() {

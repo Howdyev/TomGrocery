@@ -39,11 +39,12 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityDashboardBinding
-    private lateinit var localStorage: LocalStorage
+    @Inject lateinit var localStorage: LocalStorage
     private lateinit var appDB: AppDatabase
     private lateinit var cartDao: CartDao
     private var cartMenuItem: MenuItem? = null
@@ -51,7 +52,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     private var compositeDisposable = CompositeDisposable()
     var cartList = listOf<Product>()
     override fun onCreate(savedInstanceState: Bundle?) {
-        localStorage = LocalStorage(applicationContext)
         super.onCreate(savedInstanceState)
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -85,6 +85,9 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         displaySelectedScreen(R.id.nav_home)
 
         setupObserver()
+
+        localStorage.count++
+        Log.i("pmh", "LocalStorage ${localStorage.count}")
     }
 
     private fun setupObserver() {

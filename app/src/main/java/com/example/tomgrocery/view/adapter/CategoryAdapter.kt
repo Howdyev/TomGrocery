@@ -14,6 +14,7 @@ import com.example.tomgrocery.view.activity.DashboardActivity
 import com.example.tomgrocery.viewmodel.DashboardViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.internal.managers.ViewComponentManager
 import java.lang.Exception
 
 
@@ -37,7 +38,12 @@ class CategoryAdapter(
             bind(category)
             itemView.setOnClickListener {
                 DashboardViewModel.staticCategoryId = category.catId
-                val dashboardActivity = context as DashboardActivity
+                val mContext = if (context is ViewComponentManager.FragmentContextWrapper)
+                    context.baseContext
+                else
+                    context
+                val dashboardActivity = mContext as DashboardActivity
+
                 dashboardActivity?.let {
                     it.displaySelectedScreen(R.id.nav_products)
                 }

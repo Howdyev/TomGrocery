@@ -22,12 +22,13 @@ import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 import java.nio.charset.StandardCharsets
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AddressFragment : Fragment() {
 
     private lateinit var binding: FragmentAddressBinding
-    private lateinit var localStorage: LocalStorage
+    @Inject lateinit var localStorage: LocalStorage
     private val viewModel: CheckoutViewModel by viewModels()
     private lateinit var appDB: AppDatabase
     private lateinit var addressDao: AddressDao
@@ -46,7 +47,6 @@ class AddressFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDBConnection()
-        localStorage = LocalStorage(requireActivity().applicationContext)
         setupObserver()
         activity?.title = "Address"
 

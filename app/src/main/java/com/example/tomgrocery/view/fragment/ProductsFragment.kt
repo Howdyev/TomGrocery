@@ -5,24 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import com.example.tomgrocery.viewmodel.DashboardFactory
+import androidx.fragment.app.viewModels
 import com.example.tomgrocery.viewmodel.DashboardViewModel
 import com.example.tomgrocery.databinding.FragmentProductsBinding
-import com.example.tomgrocery.model.remote.ApiClient
-import com.example.tomgrocery.model.remote.ApiService
-import com.example.tomgrocery.model.repository.LocalRepository
-import com.example.tomgrocery.model.repository.RemoteRepository
-import com.example.tomgrocery.model.repository.Repository
 import com.example.tomgrocery.view.adapter.fragmentadapter.SubCatBeefFragmentAdapter
 import com.example.tomgrocery.view.adapter.fragmentadapter.SubCatChickenFragmentAdapter
 import com.example.tomgrocery.view.adapter.fragmentadapter.SubCatFruitsFragmentAdapter
 import com.example.tomgrocery.view.adapter.fragmentadapter.SubCatVegFragmentAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProductsFragment : Fragment() {
 
     private lateinit var binding: FragmentProductsBinding
-    private lateinit var viewModel: DashboardViewModel
+    private val viewModel: DashboardViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +30,6 @@ class ProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViewModel()
         setupObserver()
         viewModel.getSubCategory()
 
@@ -88,13 +83,5 @@ class ProductsFragment : Fragment() {
                 binding.progressBar.root.visibility = View.GONE
             }
         }
-    }
-
-    private fun setupViewModel() {
-        val localRepository = LocalRepository()
-        val remoteRepository = RemoteRepository(ApiClient.retrofit.create(ApiService::class.java))
-        val repository = Repository(localRepository, remoteRepository)
-        val factory = DashboardFactory(repository)
-        viewModel = ViewModelProvider(requireActivity(), factory)[DashboardViewModel::class.java]
     }
 }

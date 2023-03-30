@@ -3,16 +3,19 @@ package com.example.tomgrocery.view.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tomgrocery.R
 import com.example.tomgrocery.view.adapter.ViewPagerAdapter
 import com.example.tomgrocery.databinding.ActivityWelcomeBinding
 import com.example.tomgrocery.util.localstorage.LocalStorage
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class WelcomeActivity: AppCompatActivity() {
-    private lateinit var localStorage: LocalStorage
+    @Inject lateinit var localStorage: LocalStorage
     private lateinit var timer: Timer
     private var pagePosition = 0
     private var pageCount:Int = 3
@@ -25,8 +28,10 @@ class WelcomeActivity: AppCompatActivity() {
         supportActionBar?.hide()
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        localStorage = LocalStorage(applicationContext)
         initViews()
+
+        localStorage.count++
+        Log.i("pmh", "LocalStorage ${localStorage.count}")
     }
 
     private fun initViews() {

@@ -2,6 +2,7 @@ package com.example.tomgrocery.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,30 +10,24 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.tomgrocery.model.remote.dto.LoginData
 import com.example.tomgrocery.R
 import com.example.tomgrocery.databinding.FragmentLoginBinding
 import com.example.tomgrocery.constants.Constants.FRAG_TAG_SIGNUP
-import com.example.tomgrocery.model.remote.ApiClient
-import com.example.tomgrocery.model.remote.ApiService
-import com.example.tomgrocery.model.repository.LocalRepository
-import com.example.tomgrocery.model.repository.RemoteRepository
-import com.example.tomgrocery.model.repository.Repository
 import com.example.tomgrocery.util.MyToast
 import com.example.tomgrocery.util.MyVibrator
 import com.example.tomgrocery.util.localstorage.LocalStorage
 import com.example.tomgrocery.view.activity.DashboardActivity
 import com.example.tomgrocery.view.activity.LoginRegisterActivity
 import com.example.tomgrocery.viewmodel.AuthViewModel
-import com.example.tomgrocery.viewmodel.AuthViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment: Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var containerActivity: LoginRegisterActivity
-    private lateinit var localStorage: LocalStorage
+    @Inject lateinit var localStorage: LocalStorage
     private val viewModel: AuthViewModel by viewModels()
 
     private lateinit var shakeAnimation: Animation
@@ -53,9 +48,11 @@ class LoginFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        localStorage = LocalStorage(requireActivity().applicationContext)
         initViews()
         setupObserver()
+
+        localStorage.count++
+        Log.i("pmh", "LocalStorage ${localStorage.count}")
     }
 
     private fun setupObserver() {

@@ -1,15 +1,19 @@
 package com.example.tomgrocery.util.localstorage
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.example.tomgrocery.constants.Constants
 import dagger.hilt.android.qualifiers.ApplicationContext
-import okhttp3.internal.applyConnectionSpec
 import javax.inject.Inject
-import javax.inject.Singleton
 
-class LocalStorage @Inject constructor(@ApplicationContext context: Context) {
-    private val loginPrefs = context.getSharedPreferences(Constants.LOGIN_SHARED_PREF, Context.MODE_PRIVATE)
+class MyContext(val applicationContext: Context) {
+}
+
+//class LocalStorage @Inject constructor(@ApplicationContext context: Context) { //case1
+/*class LocalStorage @Inject constructor(private val myContext: MyContext) { //case2
+    private val loginPrefs = myContext.applicationContext.getSharedPreferences(Constants.LOGIN_SHARED_PREF, Context.MODE_PRIVATE) */
+class LocalStorage @Inject constructor(myContext: MyContext) {
+    private val loginPrefs = myContext.applicationContext.getSharedPreferences(Constants.LOGIN_SHARED_PREF, Context.MODE_PRIVATE)
+    var count = 0
     private val loginEditor = loginPrefs.edit()
     fun saveLoginInfo(
         firstName: String,
